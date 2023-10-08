@@ -21,6 +21,24 @@ app.get("/api/blog-stats", async (req, res) => {
 
     // Extracting the blog data from the response
     const blogData = response.data;
+    const allBlogs = blogData.blogs;
+
+    // Total number of blogs
+    const totalBlogs = _.size(allBlogs);
+    console.log(totalBlogs);
+
+    // Blog with longest title
+    const longestTitle = _.maxBy(allBlogs, "title.length");
+
+    // Blogs logs with titles containing the word "privacy."
+    const blogsWithPrivacy = _.filter(allBlogs, (blog) => {
+      return _.includes(_.toLower(blog.title), "privacy");
+    });
+    const numberOfBlogsWithPrivacy = _.size(blogsWithPrivacy);
+
+    // Array of unique blog titles (no duplicates).
+    const uniqueTitles = _.uniqBy(allBlogs, "title");
+
     // Sending the response with blog data
     res.json(blogData);
   } catch (error) {
